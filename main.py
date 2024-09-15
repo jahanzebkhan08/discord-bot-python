@@ -1,13 +1,21 @@
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 import os
 import asyncio
+from itertools import cycle
 
 bot = commands.Bot(command_prefix='!', intents=discord.Intents.all())
+
+bot_statuses = cycle(["Status One", "Status Two", "Status Three", "Finished!"])
+
+@tasks.loop(seconds=30)
+async def change_bot_status():
+    await bot.change_presence(activity=discord.Game(next(bot_statuses)))
 
 @bot.event 
 async def on_ready():
     print("Bot ready!")
+    change_bot_status.start()
 
 @bot.command()
 async def hello(ctx):
