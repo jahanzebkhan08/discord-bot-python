@@ -34,7 +34,7 @@ class memberjoinhandler(commands.Cog):
 
         img_file = discord.File(fp=bg.image_bytes, filename=randomized_image)
 
-        await welcome_channel.send(f"Hello there, {member.name}! Be sure to read our rules and follow them carefully, thank you for joining our server!")
+        await welcome_channel.send(f"Hello there, {member.mention}! Be sure to read our rules and follow them carefully, thank you for joining our server!")
         await welcome_channel.send(file=img_file)
 
 async def setup(bot):
