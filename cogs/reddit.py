@@ -3,10 +3,17 @@ from discord.ext import commands
 from random import choice
 import asyncpraw as praw
 
+with open("clientid.txt") as file:
+    cid = file.read()
+
+with open("clientsecret.txt") as file:
+    csecret = file.read()
+
+
 class Reddit(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.reddit = praw.Reddit(client_id="wd1I6Z0KHb-BUj8oUr0hPw", client_secret="NWXPZB2GArXrFl7DZQCCJBs6Tu8TRw", user_agent="script:developmentpractice:v1.0 (by u/DisputedGlory)")
+        self.reddit = praw.Reddit(client_id=cid, client_secret=csecret, user_agent="script:developmentpractice:v1.0 (by u/DisputedGlory)")
 
     @commands.Cog.listener()
     async def on_ready(self):
