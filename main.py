@@ -1,5 +1,7 @@
 import discord
 from discord.ext import commands
+import os
+import asyncio
 
 bot = commands.Bot(command_prefix='!', intents=discord.Intents.all())
 
@@ -18,12 +20,18 @@ async def goodmorning(ctx):
 with open("token.txt") as file:
     token = file.read()
 
-@bot.command()
-async def ping(ctx):
-    ping_embed = discord.Embed(title="Ping", description="Latency in ms", color=discord.Color.blue())
-    ping_embed.add_field(name=f"{bot.user.name}'s Latency (ms): ", value=f"{round(bot.latency * 1000)}ms.", inline=False)
-    ping_embed.set_footer(text=f"Requested by {ctx.author.name}.", icon_url=ctx.author.avatar)
-    await ctx.send(embed=ping_embed)
+async def load():
+    for filename in os.listdir("./cogs"):
+        if filename.endswith(".py"):
+            await bot.load_extension(f"cogs.{filename[:-3]}")
 
-bot.run(token)
+async def main():
+    async with bot:
+        await load()
+        await bot.start(token)
+
+asyncio.run(main())
+
+
+
 
