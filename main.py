@@ -4,6 +4,7 @@ import os
 import asyncio
 from itertools import cycle
 
+discord.utils.setup_logging()
 bot = commands.Bot(command_prefix='!', intents=discord.Intents.all())
 
 bot_statuses = cycle(["Status One", "Status Two", "Status Three", "Finished!"])
