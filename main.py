@@ -17,6 +17,16 @@ async def change_bot_status():
 async def on_ready():
     print("Bot ready!")
     change_bot_status.start()
+    try:
+        synced_commands = await bot.tree.sync()
+        print(f"Synced {len(synced_commands)} commands.")
+    except Exception as e:
+        print("An error with syncing application commands has occurred: ", e)
+
+@bot.tree.command(name="hello", description="Says hello back to the command user")
+async def hello(interaction: discord.Interaction):
+    await interaction.response.send_message(f"{interaction.user.mention} Hello there!")
+
 
 @bot.command()
 async def hello(ctx):

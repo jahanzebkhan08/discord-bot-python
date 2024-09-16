@@ -1,4 +1,5 @@
 import discord
+from discord import app_commands
 from discord.ext import commands
 import sqlite3
 import math
@@ -53,14 +54,14 @@ class LevelSys(commands.Cog):
         connection.commit()
         connection.close()
 
-    @commands.command()
-    async def level(self, ctx: commands.Context, member: discord.Member=None):
+    @app_commands.command(name="level", description="Sends the level card for a given user.")
+    async def level(self, interaction: discord.Interaction, member: discord.Member=None):
         
         if member is None:
-            member = ctx.author
+            member = interaction.user
 
         member_id = member.id
-        guild_id = ctx.guild.id
+        guild_id = interaction.guild.id
 
         connection = sqlite3.connect("./cogs/levels.db")
         cursor = connection.cursor()
@@ -68,13 +69,13 @@ class LevelSys(commands.Cog):
         result = cursor.fetchone()
 
         if result is None:
-            await ctx.send(f"{member.name} currently does not have a level.")
+            await interaction.response.send_message(f"{member.name} currently does not have a level.")
         else:
             level = result[2]
             xp = result[3]
             level_up_xp = result[4]
 
-            await ctx.send(f"Level Statistics For {member.name}: \nLevel: {level} \nXP: {xp} \nXP To Level Up: {level_up_xp}")
+            await interaction.response.send_message(f"Level Statistics For {member.name}: \nLevel: {level} \nXP: {xp} \nXP To Level Up: {level_up_xp}")
 
         connection.close()
     
